@@ -5,8 +5,11 @@ import "./content.css"
 
 class Content extends React.Component {
     changeLocation = (event) => {
-        let name = event.currentTarget.getAttribute("data-name")
-        this.props.changeLocation(_.concat(this.props.currLocation, name))
+        if (!this.props.loading) {
+            let name = event.currentTarget.getAttribute("data-name")
+            let currLocation = this.props.currLocation
+            this.props.changeLocation(_.concat(currLocation, name))
+        }
     }
 
     renderContent = () => {
@@ -14,8 +17,9 @@ class Content extends React.Component {
         if (content.type === "file") {
             return <div>{`THIS IS FILE: ${content.name}`}</div>
         } else {
-            return _.map(content.children, (child) => (
+            return _.map(content.children, (child, index) => (
                 <li
+                    key={index}
                     className="link-text"
                     onClick={this.changeLocation}
                     data-name={child}
